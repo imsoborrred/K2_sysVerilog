@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 11/21/2024 09:22:22 AM
+// Create Date: 11/21/2024 08:54:41 AM
 // Design Name: 
-// Module Name: decoder
+// Module Name: mux_2_1
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,23 +20,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module decoder
-    #(parameter width = 2)
+module mux_2_1
+    #(parameter width = 8)
     (
     input logic clk,
     input logic reset,
-    input [width-1:0] address,
-    output logic [3:0] en
+    input [width-1:0]  a,
+    input [width-1:0]  b,
+    input  sreg,
+    output logic [width-1:0] f
     );
     
-    always @ (posedge clk, negedge reset) begin    
-//    always @ (*) begin   
-        case(address)
-            2'b00 : en = 4'b1000;
-            2'b01 : en = 4'b0100;
-            2'b10 : en = 4'b0010;
-            2'b11 : en = 4'b0001;
-            default : en = 4'b0000;
-        endcase
+//    always @ (posedge clk, negedge reset) begin    
+    always @ (*) begin  
+        if (sreg)
+            f = b;
+        else
+            f = a;
     end
+    
 endmodule
