@@ -1,18 +1,15 @@
 `timescale 1ns / 1ps
 
-module tb_register;
-    // Parameters
-    parameter width = 8;
-
+module tb_dff;
     // Testbench signals
-    reg [width-1:0] data;
+    reg data;
     reg clk;
     reg reset;
     reg en;
-    wire [width-1:0] q;
+    wire q;
 
-    // Instantiate the register module
-    register #(.width(width)) uut (
+    // Instantiate the Flip Flop module
+    dff uut (
         .data(data),
         .clk(clk),
         .reset(reset),
@@ -28,12 +25,12 @@ module tb_register;
 
     // Test procedure
     initial begin
-        $display("Starting Register Testbench...");
+        $display("Starting Flip Flop Testbench...");
 
         // Apply reset
         reset = 0;
         en = 0;
-        data = 4'b0000;
+        data = 1'b0;
         #10;
 
         // Release reset
@@ -42,24 +39,24 @@ module tb_register;
 
         // Test case 1: Enable is low, data should not be latched
         en = 0;
-        data = 4'b1010;
+        data = 1'b1;
         #10;
         $display("Time: %0t | reset: %b | en: %b | data: %b | q: %b", $time, reset, en, data, q);
 
         // Test case 2: Enable is high, data should be latched
         en = 1;
-        data = 4'b1100;
+        data = 1'b0;
         #10;
         $display("Time: %0t | reset: %b | en: %b | data: %b | q: %b", $time, reset, en, data, q);
 
         // Test case 3: Change data while enabled
-        data = 4'b0110;
+        data = 1'b1;
         #10;
         $display("Time: %0t | reset: %b | en: %b | data: %b | q: %b", $time, reset, en, data, q);
 
         // Test case 4: Disable enable, data should not change
         en = 0;
-        data = 4'b1111;
+        data = 1'b0;
         #10;
         $display("Time: %0t | reset: %b | en: %b | data: %b | q: %b", $time, reset, en, data, q);
 
@@ -69,7 +66,7 @@ module tb_register;
         $display("Time: %0t | reset: %b | en: %b | data: %b | q: %b (after reset)", $time, reset, en, data, q);
 
         // End of test
-        $display("Register Testbench completed.");
+        $display("Flip Flop Testbench completed.");
         $finish;
     end
 endmodule
